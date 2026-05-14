@@ -1,10 +1,9 @@
 import xml.etree.ElementTree as ET
 import re
 
-# Path to your XML file
+# Path to the XML file
 file_path = "modified_sms_v2.xml"
 
-# Parse XML
 tree = ET.parse(file_path)
 root = tree.getroot()
 
@@ -18,7 +17,7 @@ sent_count = 0
 for sms in root.findall("sms"):
     body = sms.get("body")
 
-    # RECEIVED MONEY
+    # Received money
     if "received" in body.lower():
         match = re.search(r"received\s([\d,]+)\sRWF", body)
 
@@ -27,13 +26,11 @@ for sms in root.findall("sms"):
             total_received += amount
             received_count += 1
 
-    # MONEY SENT / PAYMENT
+    # Money sent / transfered
     elif "payment of" in body.lower() or "transferred to" in body.lower():
 
-        # payment of 1,000 RWF
         payment_match = re.search(r"payment of\s([\d,]+)\sRWF", body)
 
-        # 1500 RWF transferred to
         transfer_match = re.search(r"([\d,]+)\sRWF transferred to", body)
 
         if payment_match:
